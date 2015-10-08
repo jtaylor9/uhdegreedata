@@ -1,8 +1,12 @@
 /**
  * Created by jtayl_000 on 9/29/2015.
  */
-//for totalDegrees
-var partData = uhdata.slice(0,2).concat(_.find(uhdata, isHawLegacy));
+
+/*globals _,uhdata*/
+/*exported partData, maxDegrees, listCampuses, doctoralDegreePrograms*/
+/*exported totalDegreesByYear, listCampusDegrees, percentageHawaiian*/
+
+var partData = uhdata.slice(0, 2).concat(_.find(uhdata, isHawLegacy));
 
 //adds all the number, found in the "Awards" field of the list
 //
@@ -26,18 +30,18 @@ function totalHawLegacy(indata) {
   return _.reduce(findHawLegacy(indata), addDegrees, 0);
 }
 
-function listCampuses(inData) {
-  return _.uniq(_.pluck(uhdata, "CAMPUS"));
+function listCampuses(indata) {
+  return _.uniq(_.pluck(indata, "CAMPUS"));
 }
 
 function percentageHawaiian(indata) {
-  return  ( totalHawLegacy(indata) / totalDegrees(indata) ) * 100;
+  return ( totalHawLegacy(indata) / totalDegrees(indata) ) * 100;
 }
 
 function isYear(year) {
-  return function(record) {
+  return function (record) {
     return record["FISCAL_YEAR"] === year;
-  }
+  };
 }
 
 function findYears(inData, year) {
@@ -54,7 +58,7 @@ function groupByCampus(inData) {
 
 function listCampusDegrees(inData) {
   return _.mapObject(groupByCampus(inData),
-      function(val, key) {
+      function (val) {
         return _.reduce(val, addDegrees, 0);
       });
 }
@@ -65,8 +69,8 @@ function groupByYear(inData) {
 
 function maxDegrees(inData) {
   return _.max(_.mapObject(groupByYear(inData),
-      function(val, key) {
-        return _.reduce(val, addDegrees,0);
+      function (val) {
+        return _.reduce(val, addDegrees, 0);
       }));
 }
 
@@ -75,28 +79,10 @@ function isDoctor(record) {
 }
 
 function getDoctorRecords(indata) {
-  return _.filter(indata, isDoctor)
+  return _.filter(indata, isDoctor);
 }
 
-function doctorDegreePrograms(indata) {
+function doctoralDegreePrograms(indata) {
   return _.uniq(_.pluck(getDoctorRecords(indata), "CIP_DESC"));
 }
 
-//Running totalDegrees()
-console.log(totalDegrees(uhdata));
-
-//Running percentageHawaiian
-console.log(percentageHawaiian(uhdata));
-
-//Running listCampuses()
-console.log(listCampuses(uhdata));
-console.log(listCampuses(uhdata).length)
-
-//Running totalDegreesByYear
-console.log(totalDegreesByYear(uhdata, 2014));
-
-console.log(listCampusDegrees(uhdata));
-
-console.log(maxDegrees(uhdata));
-
-console.log(doctorDegreePrograms(uhdata));
