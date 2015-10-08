@@ -8,13 +8,23 @@
 
 var partData = uhdata.slice(0, 2).concat(_.find(uhdata, isHawLegacy));
 
-//adds all the number, found in the "Awards" field of the list
-//
 function addDegrees(runningTotal, record) {
+  if (isNaN(record["AWARDS"])) {
+    throw new Error("Non-numeric AWARDS.");
+  }
+
   return runningTotal + record["AWARDS"];
 }
 
+function hasAwards(record) {
+  return record.hasOwnProperty("AWARDS");
+}
+
 function totalDegrees(inData) {
+  if (!_.every(inData, hasAwards)) {
+    throw  new Error("No AWARDS field.");
+  }
+
   return _.reduce(inData, addDegrees, 0);
 }
 
