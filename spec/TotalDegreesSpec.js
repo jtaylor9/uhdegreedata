@@ -18,4 +18,18 @@ describe("TotalDegrees", function () {
   it("should throw an error when a record has a non-numeric awards field", function () {
     expect(function(){totalDegrees(noNumericAwards);}).toThrowError("Non-numeric AWARDS.");
   });
+
+});
+
+describe("projectEulerThree", function () {
+  var testNum = 600851475143;
+
+  it("should return a single number for given input", function () {
+    expect(projectEulerThree(testNum)).toEqual(6857);
+  });
+
+  var tester = "number";
+  it("should throw an error if not a number", function () {
+    expect(projectEulerThree(tester)).toThrowError("Non-numeric Input.");
+  });
 });

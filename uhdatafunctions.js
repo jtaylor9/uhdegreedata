@@ -3,10 +3,11 @@
  */
 
 /*globals _,uhdata*/
-/*exported partData, maxDegrees, listCampuses, doctoralDegreePrograms*/
-/*exported totalDegreesByYear, listCampusDegrees, percentageHawaiian*/
+/*exported partData, maxDegrees, listCampuses, doctoralDegreePrograms, num*/
+/*exported totalDegreesByYear, listCampusDegrees, percentageHawaiian, projectEulerThree*/
 
 var partData = uhdata.slice(0, 2).concat(_.find(uhdata, isHawLegacy));
+var num = 100;
 
 function addDegrees(runningTotal, record) {
   if (isNaN(record["AWARDS"])) {
@@ -94,5 +95,23 @@ function getDoctorRecords(indata) {
 
 function doctoralDegreePrograms(indata) {
   return _.uniq(_.pluck(getDoctorRecords(indata), "CIP_DESC"));
+}
+
+function projectEulerThree(num) {
+  var pFactors = [];
+  var div = 2;
+
+  if(isNaN(num)) {
+    throw new Error("Non-numeric Input.");
+  }
+
+  while (num > 1) {
+    while ((num % div === 0)) {
+      pFactors.push(div);
+      num /= div;
+    }
+    div += 1;
+  }
+  return pFactors[pFactors.length - 1];
 }
 
